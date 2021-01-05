@@ -14,9 +14,11 @@ const cellElements = document.querySelectorAll('[data-cell]');
 const board = document.getElementById('board')
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
 const winningMessageElement = document.getElementById('winningMessage')
-const messagePlayerTurn = document.querySelector('[message-turning-player]')
 const restart = document.getElementById('restartBtn')
+const statusDisplay = document.querySelector('.status-action')
 let circleTurn
+let xIsNext = true
+
 
 startGame()
 
@@ -34,27 +36,34 @@ function startGame() {
     winningMessageElement.classList.remove('show')
 }
 
+// checking turns
 function handleClick(e) {
     const cell = e.target;
     const currentClass = circleTurn ? circle_class : x_class
     placeMark(cell, currentClass)
-        // check for win
     if (checkWin(currentClass)) {
         endGame(false)
     } else if (isDraw()) {
         endGame(true)
-
     } else {
+        xIsNext = !xIsNext
+        if (xIsNext) {
+            statusDisplay.innerHTML = `${x_class}'s turn`
+        } else {
+            statusDisplay.innerHTML = `${circle_class}'s turn`
+        }
         swapTurns()
         setBoardHoverClass()
     }
 }
 
+
+// winning message and draw ending game
 function endGame(draw) {
     if (draw) {
         winningMessageTextElement.innerText = "Draw !"
     } else {
-        winningMessageTextElement.innerText = `${circleTurn ? "O's" : "X's" } Wins !`
+        winningMessageTextElement.innerText = `${circleTurn ? "Player 2 " : "Player 1 " } Wins !`
     }
     winningMessageElement.classList.add('show')
 }
@@ -70,6 +79,7 @@ function placeMark(cell, currentClass) {
     cell.classList.add(currentClass)
 }
 
+// swapping turns
 function swapTurns() {
     circleTurn = !circleTurn
 }
