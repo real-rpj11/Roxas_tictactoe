@@ -22,6 +22,10 @@ body {
     color: red;
 }
 
+span {
+    color: blue;
+}
+
 .board {
     width: 100vm;
     height: 100%;
